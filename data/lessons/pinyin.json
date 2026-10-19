@@ -1,0 +1,165 @@
+{
+  "_meta": {
+    "version": "draft-2026-10-19",
+    "source": "人教版部编版 1 上 语文 拼音单元 (8 课)",
+    "note": "拼音模块 6-7 课时结构: 6 个单韵母 + 23 声母 + 复/前/后鼻韵母 + 整体认读 + 综合拼读",
+    "grade": 1,
+    "term": "up",
+    "pinyinProVersion": "3.29.5"
+  },
+  "lessons": [
+    {
+      "id": "py-l1",
+      "type": "pinyin",
+      "category": "final",
+      "title": "1. 单韵母 a o e i u ü",
+      "subtitle": "4 声调 + 单韵母",
+      "items": [
+        { "char": "a", "name": "a", "tone": "ā á ǎ à", "example": { "w": "阿姨", "y": "ā yí", "img": "ayi.webp" }, "audio": "py/a.mp3" },
+        { "char": "o", "name": "o", "tone": "ō ó ǒ ò", "example": { "w": "公鸡", "y": "gōng jī", "img": "rooster.webp" }, "audio": "py/o.mp3" },
+        { "char": "e", "name": "e", "tone": "ē é ě è", "example": { "w": "鹅", "y": "é", "img": "goose.webp" }, "audio": "py/e.mp3" },
+        { "char": "i", "name": "i", "tone": "ī í ǐ ì", "example": { "w": "衣服", "y": "yī fu", "img": "clothes.webp" }, "audio": "py/i.mp3" },
+        { "char": "u", "name": "u", "tone": "ū ú ǔ ù", "example": { "w": "乌龟", "y": "wū guī", "img": "turtle.webp" }, "audio": "py/u.mp3" },
+        { "char": "ü", "name": "ü", "tone": "ǖ ǘ ǚ ǜ", "example": { "w": "鱼", "y": "yú", "img": "fish.webp" }, "audio": "py/ü.mp3" }
+      ],
+      "count": 6
+    },
+    {
+      "id": "py-l2",
+      "type": "pinyin",
+      "category": "initial",
+      "title": "2. 声母 b p m f / d t n l",
+      "subtitle": "8 个声母",
+      "items": [
+        { "char": "b", "name": "b", "shape": "像 6 字, 一竖右下半圆", "example": { "w": "爸", "y": "bà" }, "audio": "py/b.mp3" },
+        { "char": "p", "name": "p", "shape": "像 9 字, 一竖右上半圆", "example": { "w": "爬", "y": "pá" }, "audio": "py/p.mp3" },
+        { "char": "m", "name": "m", "shape": "两个门洞", "example": { "w": "妈", "y": "mā" }, "audio": "py/m.mp3" },
+        { "char": "f", "name": "f", "shape": "像伞把", "example": { "w": "佛", "y": "fó" }, "audio": "py/f.mp3" },
+        { "char": "d", "name": "d", "shape": "像马蹄", "example": { "w": "大", "y": "dà" }, "audio": "py/d.mp3" },
+        { "char": "t", "name": "t", "shape": "像伞把朝下", "example": { "w": "他", "y": "tā" }, "audio": "py/t.mp3" },
+        { "char": "n", "name": "n", "shape": "一个门洞", "example": { "w": "拿", "y": "ná" }, "audio": "py/n.mp3" },
+        { "char": "l", "name": "l", "shape": "一根小棒", "example": { "w": "拉", "y": "lā" }, "audio": "py/l.mp3" }
+      ],
+      "count": 8
+    },
+    {
+      "id": "py-l3",
+      "type": "pinyin",
+      "category": "initial",
+      "title": "3. 声母 g k h / j q x",
+      "subtitle": "6 个声母",
+      "items": [
+        { "char": "g", "name": "g", "example": { "w": "哥", "y": "gē" }, "audio": "py/g.mp3" },
+        { "char": "k", "name": "k", "example": { "w": "可", "y": "kě" }, "audio": "py/k.mp3" },
+        { "char": "h", "name": "h", "example": { "w": "喝", "y": "hē" }, "audio": "py/h.mp3" },
+        { "char": "j", "name": "j", "example": { "w": "鸡", "y": "jī" }, "audio": "py/j.mp3" },
+        { "char": "q", "name": "q", "example": { "w": "七", "y": "qī" }, "audio": "py/q.mp3" },
+        { "char": "x", "name": "x", "example": { "w": "西", "y": "xī" }, "audio": "py/x.mp3" }
+      ],
+      "count": 6
+    },
+    {
+      "id": "py-l4",
+      "type": "pinyin",
+      "category": "initial",
+      "title": "4. 声母 zh ch sh r / z c s / y w",
+      "subtitle": "9 个声母 (含翘舌音)",
+      "items": [
+        { "char": "zh", "name": "zh", "shape": "z 上翘", "example": { "w": "知", "y": "zhī" }, "audio": "py/zh.mp3" },
+        { "char": "ch", "name": "ch", "shape": "c 上翘", "example": { "w": "吃", "y": "chī" }, "audio": "py/ch.mp3" },
+        { "char": "sh", "name": "sh", "shape": "s 上翘", "example": { "w": "狮", "y": "shī" }, "audio": "py/sh.mp3" },
+        { "char": "r", "name": "r", "example": { "w": "日", "y": "rì" }, "audio": "py/r.mp3" },
+        { "char": "z", "name": "z", "example": { "w": "字", "y": "zì" }, "audio": "py/z.mp3" },
+        { "char": "c", "name": "c", "example": { "w": "次", "y": "cì" }, "audio": "py/c.mp3" },
+        { "char": "s", "name": "s", "example": { "w": "四", "y": "sì" }, "audio": "py/s.mp3" },
+        { "char": "y", "name": "y", "shape": "声母, i 上加一横", "example": { "w": "一", "y": "yī" }, "audio": "py/y.mp3" },
+        { "char": "w", "name": "w", "shape": "声母, u 上加一横", "example": { "w": "五", "y": "wǔ" }, "audio": "py/w.mp3" }
+      ],
+      "count": 9
+    },
+    {
+      "id": "py-l5",
+      "type": "pinyin",
+      "category": "final",
+      "title": "5. 复韵母 + 特殊韵母",
+      "subtitle": "ai ei ui ao ou iu ie üe er",
+      "items": [
+        { "char": "ai", "name": "ai", "example": { "w": "爱", "y": "ài" }, "audio": "py/ai.mp3" },
+        { "char": "ei", "name": "ei", "example": { "w": "杯", "y": "bēi" }, "audio": "py/ei.mp3" },
+        { "char": "ui", "name": "ui", "example": { "w": "对", "y": "duì" }, "audio": "py/ui.mp3" },
+        { "char": "ao", "name": "ao", "example": { "w": "高", "y": "gāo" }, "audio": "py/ao.mp3" },
+        { "char": "ou", "name": "ou", "example": { "w": "走", "y": "zǒu" }, "audio": "py/ou.mp3" },
+        { "char": "iu", "name": "iu", "example": { "w": "牛", "y": "niú" }, "audio": "py/iu.mp3" },
+        { "char": "ie", "name": "ie", "example": { "w": "写", "y": "xiě" }, "audio": "py/ie.mp3" },
+        { "char": "üe", "name": "üe", "example": { "w": "月", "y": "yuè" }, "audio": "py/üe.mp3" },
+        { "char": "er", "name": "er", "example": { "w": "二", "y": "èr" }, "audio": "py/er.mp3" }
+      ],
+      "count": 9
+    },
+    {
+      "id": "py-l6",
+      "type": "pinyin",
+      "category": "final",
+      "title": "6. 前鼻韵母 + 后鼻韵母",
+      "subtitle": "an en in un ün / ang eng ing ong",
+      "items": [
+        { "char": "an", "name": "an", "example": { "w": "安", "y": "ān" }, "audio": "py/an.mp3" },
+        { "char": "en", "name": "en", "example": { "w": "恩", "y": "ēn" }, "audio": "py/en.mp3" },
+        { "char": "in", "name": "in", "example": { "w": "心", "y": "xīn" }, "audio": "py/in.mp3" },
+        { "char": "un", "name": "un", "example": { "w": "云", "y": "yún" }, "audio": "py/un.mp3" },
+        { "char": "ün", "name": "ün", "example": { "w": "群", "y": "qún" }, "audio": "py/ün.mp3" },
+        { "char": "ang", "name": "ang", "example": { "w": "昂", "y": "áng" }, "audio": "py/ang.mp3" },
+        { "char": "eng", "name": "eng", "example": { "w": "风", "y": "fēng" }, "audio": "py/eng.mp3" },
+        { "char": "ing", "name": "ing", "example": { "w": "鹰", "y": "yīng" }, "audio": "py/ing.mp3" },
+        { "char": "ong", "name": "ong", "example": { "w": "中", "y": "zhōng" }, "audio": "py/ong.mp3" }
+      ],
+      "count": 9
+    },
+    {
+      "id": "py-l7",
+      "type": "pinyin",
+      "category": "whole",
+      "title": "7. 整体认读音节",
+      "subtitle": "zhi chi shi ri zi ci si yi wu yu ye yue yuan yin yun ying (16 个)",
+      "items": [
+        { "char": "zhi", "name": "zhi", "example": { "w": "知", "y": "zhī" } },
+        { "char": "chi", "name": "chi", "example": { "w": "吃", "y": "chī" } },
+        { "char": "shi", "name": "shi", "example": { "w": "狮", "y": "shī" } },
+        { "char": "ri", "name": "ri", "example": { "w": "日", "y": "rì" } },
+        { "char": "zi", "name": "zi", "example": { "w": "字", "y": "zì" } },
+        { "char": "ci", "name": "ci", "example": { "w": "次", "y": "cì" } },
+        { "char": "si", "name": "si", "example": { "w": "四", "y": "sì" } },
+        { "char": "yi", "name": "yi", "example": { "w": "衣", "y": "yī" } },
+        { "char": "wu", "name": "wu", "example": { "w": "五", "y": "wǔ" } },
+        { "char": "yu", "name": "yu", "example": { "w": "鱼", "y": "yú" } },
+        { "char": "ye", "name": "ye", "example": { "w": "也", "y": "yě" } },
+        { "char": "yue", "name": "yue", "example": { "w": "月", "y": "yuè" } },
+        { "char": "yuan", "name": "yuan", "example": { "w": "圆", "y": "yuán" } },
+        { "char": "yin", "name": "yin", "example": { "w": "音", "y": "yīn" } },
+        { "char": "yun", "name": "yun", "example": { "w": "云", "y": "yún" } },
+        { "char": "ying", "name": "ying", "example": { "w": "鹰", "y": "yīng" } }
+      ],
+      "count": 16
+    },
+    {
+      "id": "py-l8",
+      "type": "pinyin",
+      "category": "blend",
+      "title": "8. 综合拼读练习",
+      "subtitle": "b+a=ba, 1 声母 + 1 韵母 = 1 音节",
+      "count": 30,
+      "examples": [
+        { "i": "b", "f": "a", "syllable": "ba", "w": "八", "y": "bā" },
+        { "i": "m", "f": "a", "syllable": "ma", "w": "妈", "y": "mā" },
+        { "i": "d", "f": "a", "syllable": "da", "w": "大", "y": "dà" },
+        { "i": "t", "f": "a", "syllable": "ta", "w": "他", "y": "tā" },
+        { "i": "n", "f": "a", "syllable": "na", "w": "那", "y": "nà" },
+        { "i": "l", "f": "a", "syllable": "la", "w": "拉", "y": "lā" },
+        { "i": "p", "f": "i", "syllable": "pi", "w": "皮", "y": "pí" },
+        { "i": "b", "f": "i", "syllable": "bi", "w": "笔", "y": "bǐ" },
+        { "i": "h", "f": "u", "syllable": "hu", "w": "湖", "y": "hú" },
+        { "i": "g", "f": "u", "syllable": "gu", "w": "古", "y": "gǔ" }
+      ]
+    }
+  ]
+}

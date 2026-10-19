@@ -1,0 +1,123 @@
+{
+  "_meta": {
+    "version": "draft-2026-10-19",
+    "source": "人教版部编版 1 上 数学 (一年级数学 2017 部编版)",
+    "note": "10 课时结构, 涵盖数字认知/书写/加减/方位/时间/图形",
+    "grade": 1,
+    "term": "up"
+  },
+  "lessons": [
+    {
+      "id": "m-l1",
+      "type": "math",
+      "subtype": "num-write",
+      "title": "数字 1-5",
+      "range": [1, 5],
+      "items": [
+        { "w": "1", "pinyin": "yī", "img": "1.webp", "strokeOrder": "从上到下" },
+        { "w": "2", "pinyin": "èr", "img": "2.webp", "strokeOrder": "从上到下" },
+        { "w": "3", "pinyin": "sān", "img": "3.webp", "strokeOrder": "从上到下, 中间弧度" },
+        { "w": "4", "pinyin": "sì", "img": "4.webp", "strokeOrder": "横折 + 撇 + 竖" },
+        { "w": "5", "pinyin": "wǔ", "img": "5.webp", "strokeOrder": "横 + 竖 + 横折" }
+      ],
+      "count": 10
+    },
+    {
+      "id": "m-l2",
+      "type": "math",
+      "subtype": "num-write",
+      "title": "数字 6-10",
+      "range": [6, 10],
+      "items": [
+        { "w": "6", "pinyin": "liù", "strokeOrder": "横折 + 竖折" },
+        { "w": "7", "pinyin": "qī", "strokeOrder": "横 + 竖弯钩" },
+        { "w": "8", "pinyin": "bā", "strokeOrder": "两笔弧" },
+        { "w": "9", "pinyin": "jiǔ", "strokeOrder": "竖折 + 横折钩" },
+        { "w": "10", "pinyin": "shí", "strokeOrder": "横 + 竖" }
+      ],
+      "count": 10
+    },
+    {
+      "id": "m-l3",
+      "type": "math",
+      "subtype": "num-write",
+      "title": "数字 11-20",
+      "range": [11, 20],
+      "items": "11-20 的认知和书写 (2 位数)",
+      "count": 15
+    },
+    {
+      "id": "m-l4",
+      "type": "math",
+      "subtype": "add",
+      "title": "5 以内加法",
+      "range": 5,
+      "hasSub": false,
+      "count": 20,
+      "examples": ["1+1=2", "2+2=4", "3+1=4", "5+0=5"]
+    },
+    {
+      "id": "m-l5",
+      "type": "math",
+      "subtype": "add",
+      "title": "5 以内减法",
+      "range": 5,
+      "hasSub": true,
+      "count": 15,
+      "examples": ["3-1=2", "5-2=3", "4-4=0"]
+    },
+    {
+      "id": "m-l6",
+      "type": "math",
+      "subtype": "add",
+      "title": "10 以内加法 (凑十法预备)",
+      "range": 10,
+      "hasSub": false,
+      "count": 25,
+      "examples": ["6+4=10", "7+3=10", "8+2=10", "9+1=10"]
+    },
+    {
+      "id": "m-l7",
+      "type": "math",
+      "subtype": "add",
+      "title": "10 以内加减混合 (凑十法)",
+      "range": 10,
+      "hasSub": true,
+      "count": 30,
+      "examples": ["6+4=10", "10-7=3", "8+2=10", "9-4=5"]
+    },
+    {
+      "id": "m-l8",
+      "type": "math",
+      "subtype": "add",
+      "title": "20 以内不进位 (10+5=15 类)",
+      "range": 20,
+      "hasSub": true,
+      "count": 20,
+      "examples": ["10+5=15", "11+3=14", "16-5=11"]
+    },
+    {
+      "id": "m-l9",
+      "type": "math",
+      "subtype": "add",
+      "title": "20 以内进位 (凑十法 + 破十法)",
+      "range": 20,
+      "hasSub": true,
+      "count": 30,
+      "examples": ["9+5=14", "8+7=15", "15-7=8", "12-9=3"]
+    },
+    {
+      "id": "m-l10",
+      "type": "math",
+      "subtype": "cognition",
+      "title": "方位 + 时间 + 图形",
+      "items": [
+        { "name": "方位", "concept": "上 / 下 / 前 / 后 / 左 / 右" },
+        { "name": "时间", "concept": "整点 (1时, 2时 ... 12时) + 半点 (1时半)" },
+        { "name": "图形", "concept": "圆 / 方 / 三角 / 长方" },
+        { "name": "比较", "concept": "大小 / 多少 / 长短 / 高矮 / 轻重" }
+      ],
+      "count": 10
+    }
+  ]
+}
