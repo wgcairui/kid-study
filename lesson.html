@@ -16,50 +16,82 @@
       font-size: 14px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .lesson-title { font-size: 18px; font-weight: 600; color: #2c3e50; }
     .lesson-progress { font-size: 13px; color: #999; }
-    .char-display { background: #fff; border-radius: 24px; padding: 30px 20px;
-      text-align: center; margin-bottom: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
-    .big-char { font-size: 120px; font-weight: 600; color: #2c3e50;
-      line-height: 1.2; cursor: pointer; user-select: none;
-      transition: transform 0.2s; }
-    .big-char:hover { transform: scale(1.05); }
-    .pinyin { font-size: 24px; color: #666; margin-top: 8px; cursor: pointer; }
+    /* 5 关进度条 */
+    .stage-bar { display: flex; gap: 6px; margin-bottom: 16px; background: #fff;
+      border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .stage-step { flex: 1; text-align: center; font-size: 12px; color: #aaa;
+      padding: 8px 4px; border-radius: 8px; transition: all 0.2s; }
+    .stage-step.on { background: #A8D8EA; color: #fff; font-weight: 600; }
+    .stage-step.done { background: #C8E6C9; color: #2c3e50; }
+    .stage-step .icon { font-size: 20px; display: block; }
+    /* 关卡主区 */
+    .stage-area { background: #fff; border-radius: 16px; padding: 20px;
+      min-height: 320px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+    .stage-title { margin: 0 0 16px; font-size: 18px; color: #2c3e50; text-align: center; }
+    /* 关卡 1 玩 - 大图 + 触发 */
+    .play-area { text-align: center; }
+    .play-emoji { font-size: 140px; line-height: 1; margin: 20px 0;
+      animation: bounce 2s infinite; cursor: pointer; user-select: none; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    .play-hint { color: #999; font-size: 14px; margin-bottom: 16px; }
+    /* 关卡 2 认 */
+    .recognize-area { text-align: center; }
+    .big-char { font-size: 160px; font-weight: 600; color: #2c3e50;
+      line-height: 1; cursor: pointer; user-select: none; }
+    .pinyin { font-size: 28px; color: #666; margin-top: 8px; }
     .meaning { font-size: 16px; color: #999; margin-top: 6px; }
-    .play-btn { background: #A8D8EA; color: #fff; border: 0; border-radius: 20px;
-      padding: 10px 24px; font-size: 16px; cursor: pointer; margin-top: 16px;
+    /* 关卡 3 读 */
+    .speak-area { text-align: center; }
+    .record-btn { width: 100px; height: 100px; border-radius: 50%; border: 0;
+      background: #FFAAA5; color: #fff; font-size: 16px; font-weight: 600;
+      cursor: pointer; box-shadow: 0 4px 12px rgba(255,170,165,0.4);
+      transition: all 0.2s; margin: 20px 0; }
+    .record-btn.recording { background: #FF6F6F; transform: scale(1.1); animation: pulse 1s infinite; }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,111,111,0.7); }
+      50% { box-shadow: 0 0 0 20px rgba(255,111,111,0); }
+    }
+    .audio-playback { background: #FFEFD5; border-radius: 12px; padding: 12px;
+      margin: 12px 0; display: flex; align-items: center; gap: 10px; }
+    .audio-playback audio { flex: 1; }
+    /* 关卡 4 写 */
+    .write-area { text-align: center; }
+    .stroke-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+    .stroke-target { border: 2px dashed #FFAAA5; border-radius: 12px; background: #fff; }
+    /* 关卡 5 复习 */
+    .review-area { text-align: center; }
+    .review-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+      max-width: 480px; margin: 16px auto; }
+    .review-btn { aspect-ratio: 1; background: #FAF6EE; border: 2px solid transparent;
+      border-radius: 16px; font-size: 36px; cursor: pointer; transition: all 0.2s;
+      font-weight: 600; color: #555; }
+    .review-btn.correct { background: #C8E6C9; border-color: #4caf50; }
+    .review-btn.wrong { background: #FFCDD2; border-color: #ef5350; }
+    .review-btn:active { transform: scale(0.95); }
+    /* 通过按钮 */
+    .action-btn { display: block; margin: 20px auto 0; padding: 14px 32px;
+      background: #A8D8EA; color: #fff; border: 0; border-radius: 24px;
+      font-size: 16px; font-weight: 600; cursor: pointer;
       box-shadow: 0 2px 8px rgba(168,216,234,0.4); }
-    .play-btn:active { transform: scale(0.97); }
-    .games { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
-      margin-bottom: 16px; }
-    .game-btn { background: #fff; border: 0; border-radius: 16px; padding: 16px 8px;
-      font-size: 14px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      transition: all 0.2s; }
-    .game-btn.on { background: #C8E6C9; color: #2c3e50; font-weight: 600; }
-    .game-btn:active { transform: scale(0.97); }
-    .game-area { background: #fff; border-radius: 16px; padding: 20px;
-      min-height: 240px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
-    .game-area h3 { margin: 0 0 12px; font-size: 16px; color: #2c3e50; }
-    .stroke-grid { display: flex; flex-wrap: wrap; gap: 6px; }
-    .stroke-grid svg { border-radius: 6px; }
-    .stroke-anim-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .stroke-target { border: 2px dashed #eee; border-radius: 12px; }
-    .listen-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-    .listen-btn { aspect-ratio: 1; background: #FAF6EE; border: 0; border-radius: 12px;
-      font-size: 32px; cursor: pointer; transition: all 0.2s; }
-    .listen-btn.correct { background: #C8E6C9; }
-    .listen-btn.wrong { background: #FFCDD2; }
-    .listen-btn:active { transform: scale(0.95); }
-    .draw-area { text-align: center; }
-    .draw-img { max-width: 100%; max-height: 240px; border-radius: 12px; }
-    .draw-progress { margin-top: 12px; font-size: 16px; color: #666; }
-    .char-nav { display: flex; gap: 8px; margin-top: 16px; }
-    .char-nav button { flex: 1; padding: 12px; border: 0; border-radius: 12px;
-      background: #fff; font-size: 14px; cursor: pointer; }
-    .char-nav button:disabled { opacity: 0.4; cursor: not-allowed; }
-    .done-banner { background: #C8E6C9; color: #2c3e50; border-radius: 12px;
-      padding: 12px; text-align: center; margin-top: 12px; font-size: 16px; }
-    .review-banner { background: #FFD3B6; color: #fff; border-radius: 12px;
-      padding: 12px 16px; margin-bottom: 12px; font-size: 15px; }
+    .action-btn:active { transform: scale(0.97); }
+    /* 庆祝 */
+    .celebration { position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center; z-index: 200; }
+    .celebration-inner { background: #fff; border-radius: 24px; padding: 32px;
+      text-align: center; max-width: 320px; animation: pop 0.4s ease-out; }
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .celebration-emoji { font-size: 60px; }
+    .celebration-title { font-size: 22px; font-weight: 700; color: #2c3e50; margin: 12px 0; }
+    .celebration-text { color: #666; margin-bottom: 20px; }
+    /* 汉字列表（用于锁机制展示） */
+    .locked { opacity: 0.4; pointer-events: none; }
+    .locked::after { content: '🔒'; margin-left: 4px; }
   </style>
 </head>
 <body>
@@ -70,94 +102,123 @@
         <div>
           <div class="lesson-title">{{ lesson?.title || '学习' }}</div>
           <div class="lesson-progress" v-if="lesson?.items">
-            {{ currItemIndex + 1 }} / {{ lesson.items.length }} 字
+            字 {{ currItemIndex + 1 }} / {{ lesson.items.length }}
+            <span v-if="lockedCount > 0" style="color: #FFAAA5;">(还有 {{ lockedCount }} 字未解锁)</span>
           </div>
         </div>
         <div style="width: 60px;"></div>
       </div>
 
-      <div v-if="isReview" class="review-banner">
-        🔁 复习模式 · 复习对了字就从错题本移除
+      <!-- 5 关进度条 -->
+      <div class="stage-bar">
+        <div class="stage-step" :class="stepClass(0)" @click="goStage(0)">
+          <span class="icon">🎮</span>玩
+        </div>
+        <div class="stage-step" :class="stepClass(1)" @click="goStage(1)">
+          <span class="icon">👀</span>认
+        </div>
+        <div class="stage-step" :class="stepClass(2)" @click="goStage(2)">
+          <span class="icon">🗣️</span>读
+        </div>
+        <div class="stage-step" :class="stepClass(3)" @click="goStage(3)">
+          <span class="icon">✍️</span>写
+        </div>
+        <div class="stage-step" :class="stepClass(4)" @click="goStage(4)">
+          <span class="icon">⭐</span>复习
+        </div>
       </div>
 
-      <!-- 汉字展示 -->
-      <div v-if="currItem" class="char-display">
-        <div class="big-char" @click="readCurr">{{ currItem.w }}</div>
-        <div class="pinyin" @click="readCurr">{{ dict[currItem.w]?.p || '' }}</div>
-        <div class="meaning" v-if="lesson?.title">{{ lesson.title }}</div>
-        <button class="play-btn" @click="readCurr">▶ 听发音</button>
-      </div>
+      <!-- 关卡主区 -->
+      <div v-if="currItem && !locked" class="stage-area">
+        <h2 class="stage-title">{{ stageName }}</h2>
 
-      <!-- 3 个游戏按钮 -->
-      <div v-if="currItem" class="games">
-        <button class="game-btn" :class="{on: gameType === 'stroke'}"
-          @click="goGame('stroke')">🖋️ 笔画</button>
-        <button class="game-btn" :class="{on: gameType === 'listen'}"
-          @click="goGame('listen')">👂 听音</button>
-        <button class="game-btn" :class="{on: gameType === 'draw'}"
-          @click="goGame('draw')">🧩 画一画</button>
-      </div>
+        <!-- 关卡 1: 玩 - 动画引字 -->
+        <div v-if="stage === 0" class="play-area">
+          <p class="play-hint">👆 点小图猜是什么字</p>
+          <div class="play-emoji" @click="onPlayTap">{{ playEmoji }}</div>
+          <p style="color: #999; font-size: 14px;">{{ playHint }}</p>
+          <button class="action-btn" @click="passStage">我知道啦 →</button>
+        </div>
 
-      <!-- 游戏区 -->
-      <div v-if="gameType" class="game-area">
-        <h3 v-if="gameType === 'stroke'">✍️ 写一写笔画</h3>
-        <h3 v-else-if="gameType === 'listen'">🔊 听声音选字</h3>
-        <h3 v-else-if="gameType === 'draw'">🖼️ 看图猜字</h3>
+        <!-- 关卡 2: 认 - 大字 + 拼音 + 词 -->
+        <div v-if="stage === 1" class="recognize-area">
+          <div class="big-char" @click="readChar">{{ currItem.w }}</div>
+          <div class="pinyin" @click="readChar">{{ dict[currItem.w]?.p || '' }}</div>
+          <div class="meaning">{{ currItem.p || '' }}</div>
+          <p style="color: #999; font-size: 14px; margin-top: 16px;">{{ currItem.s }}</p>
+          <button class="action-btn" @click="passStage">记住了 →</button>
+        </div>
 
-        <!-- 笔画游戏 -->
-        <div v-if="gameType === 'stroke' && currItem">
-          <p style="color: #999; font-size: 13px; text-align: center;">
-            {{ strokeStatus ? `已写 ${strokeStatus[0]}/${strokeStatus[1]} 笔` : '用鼠标/手指在右下方写' }}
-          </p>
-          <div class="stroke-anim-row">
+        <!-- 关卡 3: 读 - 跟读录音 -->
+        <div v-if="stage === 2" class="speak-area">
+          <p class="play-hint">{{ recordingState === 'idle' ? '👇 按下录"读一次"' :
+            recordingState === 'recording' ? '🔴 录音中... 读完后放手' : '✅ 录完! 听听自己读' }}</p>
+          <button class="record-btn" :class="{ recording: recordingState === 'recording' }"
+            @mousedown="startRecord" @mouseup="stopRecord"
+            @touchstart.prevent="startRecord" @touchend.prevent="stopRecord">
+            {{ recordingState === 'recording' ? '●' : '🎤' }}
+          </button>
+          <div v-if="recordedAudio" class="audio-playback">
+            <span>🎧</span>
+            <audio :src="recordedAudio" controls></audio>
+            <button v-if="!pronunciationOk" @click="markGood" style="background: #C8E6C9; border: 0; padding: 8px 12px; border-radius: 8px; cursor: pointer;">✓ 读对了</button>
+          </div>
+          <button v-if="recordedAudio" class="action-btn" :disabled="!canPassRead"
+            :style="{ opacity: canPassRead ? 1 : 0.4 }" @click="passStage">下一关 →</button>
+        </div>
+
+        <!-- 关卡 4: 写 - 描红 -->
+        <div v-if="stage === 3" class="write-area">
+          <p style="color: #999; font-size: 14px;">在右下方写，写对全部笔画就过关</p>
+          <div class="stroke-row">
             <div id="stroke-ani"></div>
             <div id="stroke-write" class="stroke-target"></div>
           </div>
-          <div id="stroke-list" class="stroke-grid" style="margin-top: 12px; justify-content: center;"></div>
+          <div id="stroke-list" style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin: 8px 0;"></div>
+          <button class="action-btn" :disabled="strokeStatus?.[0] !== strokeStatus?.[1]"
+            :style="{ opacity: strokeStatus?.[0] === strokeStatus?.[1] ? 1 : 0.4 }"
+            @click="passStage">写好了 →</button>
         </div>
 
-        <!-- 听音游戏 -->
-        <div v-if="gameType === 'listen' && currItem">
-          <p style="color: #999; font-size: 13px; text-align: center; cursor: pointer;"
-            @click="readCurr">🔊 听 (再听一次)</p>
-          <div class="listen-options" style="margin-top: 12px;">
-            <button v-for="(opt, i) in listenOptions" :key="i"
-              class="listen-btn" :class="opt.status"
-              :disabled="listenLocked" @click="listenClick(opt)">
+        <!-- 关卡 5: 复习 - 选字测验 -->
+        <div v-if="stage === 4" class="review-area">
+          <p style="color: #999; font-size: 14px;">听声音，选正确的字</p>
+          <p style="font-size: 36px; cursor: pointer; margin: 10px 0;" @click="readChar">🔊</p>
+          <div class="review-options">
+            <button v-for="(opt, i) in reviewOptions" :key="i"
+              class="review-btn" :class="opt.status"
+              :disabled="reviewLocked" @click="reviewClick(opt)">
               {{ opt.w }}
             </button>
-          </div>
-        </div>
-
-        <!-- 画一画游戏 -->
-        <div v-if="gameType === 'draw' && currItem">
-          <div class="draw-area">
-            <img class="draw-img" :src="drawImg" alt="">
-            <div class="draw-progress">已猜 {{ drawCount }} / 10 次</div>
-            <div class="listen-options" style="margin-top: 12px;">
-              <button v-for="(opt, i) in listenOptions" :key="i"
-                class="listen-btn" :class="opt.status"
-                @click="drawClick(opt)">
-                {{ opt.w }}
-              </button>
-            </div>
           </div>
         </div>
       </div>
 
       <!-- 字导航 -->
-      <div v-if="currItem" class="char-nav">
-        <button @click="prevChar" :disabled="currItemIndex === 0">← 上一个字</button>
-        <button @click="nextChar" :disabled="currItemIndex >= (lesson?.items?.length || 1) - 1">下一个字 →</button>
+      <div v-if="currItem && currItemIndex < (lesson?.items?.length || 1) - 1"
+        style="margin-top: 16px; text-align: center;">
+        <button v-if="!nextLocked" @click="nextChar"
+          style="padding: 10px 20px; border: 0; border-radius: 16px; background: #fff;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer;">
+          下一个字 →
+        </button>
+        <span v-else style="color: #aaa; font-size: 13px;">先把这一关过完才能解锁下一字</span>
       </div>
 
-      <div v-if="showDoneBanner" class="done-banner">
-        🎉 全部学完啦！星星 +5 · 课已完成
+      <!-- 庆祝弹窗 -->
+      <div v-if="showCelebration" class="celebration">
+        <div class="celebration-inner">
+          <div class="celebration-emoji">🎉</div>
+          <div class="celebration-title">闯关成功！</div>
+          <div class="celebration-text">{{ currItem?.w }} 五关全过～ +5 颗星</div>
+          <button class="action-btn" @click="onCelebrationNext" style="margin: 0;">
+            {{ nextCharExists ? '下一字 →' : '完成本课 →' }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- 加载 hanzi-writer -->
   <script src="js/lib/hanzi-writer.min.js"></script>
   <script src="js/lib/dataWriter.js"></script>
   <script src="js/utils.js"></script>
@@ -165,13 +226,23 @@
   <script type="module">
     import { state, actions, activeProfile } from './js/core/store.js'
 
-    // 解析 URL
+    // 5 关的字-emoji 映射 (玩关引字用)
+    const PLAY_EMOJI = {
+      // 动植物 食物 自然
+      '苹':'🍎','梨':'🍐','桃':'🍑','杏':'🍊','瓜':'🍉','果':'🍇','鱼':'🐟',
+      '鸟':'🐦','马':'🐎','牛':'🐄','羊':'🐑','狗':'🐕','猫':'🐈','虫':'🐛',
+      '兔':'🐰','鸡':'🐔','鸭':'🦆','鹅':'🦢','狮':'🦁','虎':'🐯',
+      '花':'🌸','草':'🌱','树':'🌳','山':'⛰️','水':'💧','火':'🔥','月':'🌙',
+      '日':'☀️','星':'⭐','雨':'🌧️','雪':'❄️','云':'☁️','风':'🌬️',
+      '人':'🧑','手':'✋','足':'🦶','目':'👀','耳':'👂','心':'❤️',
+      '口':'👄','牙':'🦷','头':'🗣️','发':'💇','足':'🦶',
+      '米':'🍚','米':'🍚','书':'📖','笔':'✏️','车':'🚗',
+    }
+
     const params = new URLSearchParams(location.search)
-    const type = params.get('type') || 'chinese'  // chinese | pinyin | math | poem | review
+    const type = params.get('type') || 'chinese'
     const lessonId = params.get('id')
 
-    // 加载所需数据
-    let lesson = null
     let lessonDataPath = null
     if (type === 'chinese') lessonDataPath = './data/lessons/g1-up-w100.json'
     else if (type === 'pinyin') lessonDataPath = './data/lessons/pinyin.json'
@@ -179,173 +250,268 @@
     else if (type === 'poem') lessonDataPath = './data/lessons/poem-g1.json'
 
     const all = lessonDataPath ? await fetch(lessonDataPath).then(r => r.json()) : null
-    if (type === 'poem') {
-      lesson = all?.poems?.find(p => p.id === lessonId)
-    } else {
-      lesson = all?.lessons?.find(l => l.id === lessonId)
-    }
-
-    // 加载字典
+    const lesson = all?.lessons?.find(l => l.id === lessonId)
     const dictData = await fetch('./data/dict/word-g1.json').then(r => r.json())
     const dict = dictData.chars || {}
+
+    // 找这个字在 lesson items 里的全局索引（仅在所有 lesson 间平展计算 lock）
+    function computeAllChars() {
+      const allChars = []
+      for (const l of all.lessons) {
+        for (const item of l.items) allChars.push({ ...item, lessonId: l.id })
+      }
+      return allChars
+    }
+    const allChars = computeAllChars()
+
+    // 获取当前 lesson 在全局的起始索引
+    let globalStart = 0
+    for (let i = 0; i < all.lessons.length; i++) {
+      if (all.lessons[i].id === lessonId) {
+        for (let j = 0; j < i; j++) globalStart += all.lessons[j].items.length
+        break
+      }
+    }
+    const globalEnd = globalStart + (lesson?.items?.length || 0)
+
+    // 找出 activeProfile 已完成的字（从已完成 lesson 中读取）
+    function getCompletedChars() {
+      const done = []
+      const map = state.profiles[state.activeProfile]?.lockByLesson || {}
+      // 简化: 用 lockByChar (新加) 否则从 lessonId 推
+      const charMap = state.profiles[state.activeProfile]?.lockByChar || {}
+      for (const [w, ts] of Object.entries(charMap)) {
+        done.push(w)
+      }
+      return new Set(done)
+    }
 
     Vue.createApp({
       data() {
         return {
           state, activeProfile,
-          type, lesson, dict,
+          type, lesson, dict, allChars, globalStart, globalEnd,
           currItemIndex: 0,
-          gameType: 'stroke',
-          strokeStatus: null,
-          listenOptions: [],
-          listenLocked: false,
-          drawImg: null,
-          drawCount: 0,
-          showDoneBanner: false,
-          isReview: type === 'review',
+          stage: 0,                          // 0=玩 1=认 2=读 3=写 4=复习
+          pronunciationOk: false,            // 读关：家长点了"读对了"
+          recordedAudio: null,
+          recordingState: 'idle',            // idle | recording | done
+          strokeStatus: null,                // [完成数, 总数]
+          reviewOptions: [],
+          reviewLocked: false,
+          showCelebration: false,
+          startTime: Date.now(),
+          recorder: null,
+          chunks: [],
         }
       },
       computed: {
         currItem() {
-          if (this.isReview) {
-            // 复习模式: 从 reviewQueue 取第一个 due 的字
-            const q = this.activeProfile?.reviewQueue || []
-            const due = q.find(x => x.nextReview <= Date.now())
-            return due ? { w: due.w, lessonId: due.lessonId } : null
-          }
-          if (this.type === 'poem') {
-            return this.lesson  // 古诗整个一首当一个 item
-          }
           return this.lesson?.items?.[this.currItemIndex]
         },
+        playEmoji() {
+          return PLAY_EMOJI[this.currItem?.w] || '✨'
+        },
+        playHint() {
+          const e = this.playEmoji
+          if (e !== '✨') return '你知道这是什么吗？点图读一读！'
+          return '一起读一读这个字吧！'
+        },
+        stageName() {
+          return ['🎮 玩一玩', '👀 认一认', '🗣️ 读一读', '✍️ 写一写', '⭐ 复习一下'][this.stage]
+        },
+        // 当前字在全局索引
+        globalIndex() {
+          return this.globalStart + this.currItemIndex
+        },
+        // 当前字之前的字（包括自己）有多少没完成
+        lockedCount() {
+          const done = getCompletedChars()
+          let count = 0
+          for (let i = 0; i <= this.globalIndex; i++) {
+            const w = this.allChars[i]?.w
+            if (!done.has(w)) count++
+          }
+          return count
+        },
+        // 当前字是否被锁定（前面的字没全过）
+        locked() {
+          const done = getCompletedChars()
+          for (let i = 0; i < this.globalIndex; i++) {
+            const w = this.allChars[i]?.w
+            if (!done.has(w)) return true
+          }
+          return false
+        },
+        // 下一个字是否被锁
+        nextLocked() {
+          const next = this.globalIndex + 1
+          if (next >= this.allChars.length) return false
+          const done = getCompletedChars()
+          for (let i = 0; i < next; i++) {
+            if (!done.has(this.allChars[i]?.w)) return true
+          }
+          return false
+        },
+        nextCharExists() {
+          return this.currItemIndex < (this.lesson?.items?.length || 1) - 1
+        },
+        canPassRead() {
+          return this.recordedAudio && this.pronunciationOk
+        },
+      },
+      watch: {
+        currItemIndex() { this.resetStage() },
       },
       mounted() {
-        if (this.type === 'chinese' && this.currItem) {
-          // 等下一个 tick 让 DOM ready
-          this.$nextTick(() => this.startStrokeGame())
-        } else if (this.type === 'poem' && this.lesson) {
-          this.speakPoem()
-        } else {
-          this.gameType = null
-        }
-        this.startTime = Date.now()
-        window.addEventListener('beforeunload', this.recordMinutes)
-      },
-      beforeUnmount() {
-        this.recordMinutes()
-      },
-      methods: {
-        goBack() { window.location.href = './index.html' },
-        recordMinutes() {
-          if (!this.startTime) return
+        this.resetStage()
+        // 如果是 review 入口或首次进来，播一下 5 关音频提示
+        window.addEventListener('beforeunload', () => {
           const min = Math.round((Date.now() - this.startTime) / 60000)
           if (min > 0) actions.addTodayMinutes(min)
-        },
-        readCurr() {
-          if (!this.currItem) return
-          if (this.type === 'poem') {
-            this.speakPoem()
-          } else {
-            speakText(this.currItem.w, 2, 0.6)
-          }
-        },
-        speakPoem() {
-          if (!this.lesson?.lines) return
-          const text = this.lesson.lines.join(', 。')
-          speakText(text, 1, 0.5)
-        },
-        prevChar() { if (this.currItemIndex > 0) this.currItemIndex--; this.$nextTick(this.refreshGame) },
-        nextChar() {
-          if (this.currItemIndex < (this.lesson?.items?.length || 1) - 1) {
-            this.currItemIndex++
-            this.$nextTick(this.refreshGame)
-          } else {
-            this.finishLesson()
-          }
-        },
-        finishLesson() {
-          actions.markLessonDone(this.lesson.id, 5)
-          actions.addStar(5)
-          this.showDoneBanner = true
-        },
-        goGame(t) {
-          this.gameType = t
-          this.$nextTick(() => {
-            if (t === 'stroke') this.startStrokeGame()
-            else if (t === 'listen') this.startListenGame()
-            else if (t === 'draw') this.startDrawGame()
-          })
-        },
-        refreshGame() {
-          this.listenOptions = []
+        })
+      },
+      methods: {
+        resetStage() {
+          this.stage = 0
+          this.pronunciationOk = false
+          this.recordedAudio = null
+          this.recordingState = 'idle'
           this.strokeStatus = null
-          if (this.gameType === 'stroke') this.$nextTick(this.startStrokeGame)
-          else if (this.gameType === 'listen') this.startListenGame()
-          else if (this.gameType === 'draw') this.startDrawGame()
+          this.reviewOptions = []
+          this.reviewLocked = false
+          this.$nextTick(() => this.startStage())
+        },
+        startStage() {
+          if (this.stage === 0) {
+            // 玩 - 自动读音
+            setTimeout(() => speakText(this.currItem.w, 1, 0.6), 500)
+          } else if (this.stage === 1) {
+            // 认 - 读音
+            setTimeout(() => speakText(this.currItem.w, 2, 0.6), 500)
+          } else if (this.stage === 2) {
+            // 读 - 等家长/孩子说话
+          } else if (this.stage === 3) {
+            this.$nextTick(this.startStrokeGame)
+          } else if (this.stage === 4) {
+            this.startReviewGame()
+          }
+        },
+        onPlayTap() {
+          // 点击 emoji 揭示读音 + 字
+          speakText(this.currItem.w + ',' + this.currItem.p, 1, 0.5)
+        },
+        readChar() { speakText(this.currItem.w, 2, 0.6) },
+        async startRecord() {
+          if (this.recordingState === 'recording') return
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+            this.recorder = new MediaRecorder(stream)
+            this.chunks = []
+            this.recorder.ondataavailable = e => this.chunks.push(e.data)
+            this.recorder.onstop = () => {
+              const blob = new Blob(this.chunks, { type: 'audio/webm' })
+              this.recordedAudio = URL.createObjectURL(blob)
+              stream.getTracks().forEach(t => t.stop())
+              this.recordingState = 'done'
+            }
+            this.recorder.start()
+            this.recordingState = 'recording'
+            setTimeout(() => { if (this.recordingState === 'recording') this.stopRecord() }, 5000)
+          } catch (e) {
+            myAlert('麦克风不可用，可能是浏览器限制。请直接按 ✓ 跳到下一关。')
+          }
+        },
+        stopRecord() {
+          if (this.recordingState !== 'recording') return
+          this.recorder?.stop()
+        },
+        markGood() {
+          this.pronunciationOk = true
+          actions.addStar(1)
         },
         startStrokeGame() {
-          if (!this.currItem) return
-          const w = this.currItem.w
           setTimeout(() => {
             const aniEl = document.getElementById('stroke-ani')
             const writeEl = document.getElementById('stroke-write')
             const listEl = document.getElementById('stroke-list')
-            if (aniEl) aniHanzi(aniEl, w, 140)
-            if (writeEl) writeHanzi(writeEl, w, 160, (_, finish, total) => {
+            if (aniEl) aniHanzi(aniEl, this.currItem.w, 120)
+            if (writeEl) writeHanzi(writeEl, this.currItem.w, 160, (_, finish, total) => {
               this.strokeStatus = [finish, total]
-              if (finish === total) {
-                playAudio && playAudio('correct')
-              }
+              if (finish === total) playAudio && playAudio('correct')
             })
-            if (listEl) listHanzi(listEl, w, 38)
+            if (listEl) listHanzi(listEl, this.currItem.w, 36)
           }, 100)
         },
-        startListenGame() {
-          if (!this.currItem) return
-          // 4 个选项: 1 个正确 + 3 个混淆 (从同课其他字)
+        startReviewGame() {
           const items = this.lesson.items || []
           const others = items.filter(x => x.w !== this.currItem.w)
           const distractors = this.shuffle(others).slice(0, 3).map(x => ({...x, status: ''}))
           const right = { w: this.currItem.w, status: '' }
-          this.listenOptions = this.shuffle([right, ...distractors])
-          setTimeout(() => speakText(this.currItem.w, 2, 0.6), 200)
+          this.reviewOptions = this.shuffle([right, ...distractors])
+          setTimeout(() => speakText(this.currItem.w, 2, 0.6), 300)
         },
-        listenClick(opt) {
-          if (this.listenLocked) return
+        reviewClick(opt) {
+          if (this.reviewLocked) return
           if (opt.w === this.currItem.w) {
             opt.status = 'correct'
-            this.listenLocked = true
+            this.reviewLocked = true
             playAudio && playAudio('correct')
-            if (this.isReview) actions.reviewAnswered(opt.w, true)
+            actions.addStar(1)
+            setTimeout(() => this.completeChar(), 800)
           } else {
             opt.status = 'wrong'
             playAudio && playAudio('wrong')
-            if (!this.isReview) actions.addWrong(opt.w, this.lesson.id, 'listen')
+            actions.addWrong(opt.w, this.lesson.id, 'review')
           }
         },
-        startDrawGame() {
-          if (!this.currItem) return
-          this.drawCount = 0
-          // 随机一张 draw 图
-          const idx = Math.floor(Math.random() * 66) + 1
-          this.drawImg = `./img/draw/draw${idx}.webp`
-          // 选项
-          const items = this.lesson.items || []
-          const others = items.filter(x => x.w !== this.currItem.w)
-          const distractors = this.shuffle(others).slice(0, 3).map(x => ({...x, status: ''}))
-          this.listenOptions = this.shuffle([{ w: this.currItem.w, status: '' }, ...distractors])
+        stepClass(s) {
+          if (s < this.stage) return 'done'
+          if (s === this.stage) return 'on'
+          return ''
         },
-        drawClick(opt) {
-          if (opt.w === this.currItem.w) {
-            opt.status = 'correct'
-            this.drawCount++
-            playAudio && playAudio('correct')
+        goStage(s) {
+          // 允许回到前面关
+          if (s <= this.stage) this.stage = s
+          this.$nextTick(this.startStage)
+        },
+        passStage() {
+          actions.addStar(1)
+          this.stage++
+          if (this.stage >= 5) {
+            this.completeChar()
           } else {
-            opt.status = 'wrong'
-            playAudio && playAudio('wrong')
-            if (!this.isReview) actions.addWrong(opt.w, this.lesson.id, 'draw')
+            this.$nextTick(this.startStage)
           }
         },
+        completeChar() {
+          // 标这个字为完成
+          const profile = state.profiles[state.activeProfile]
+          if (!profile.lockByChar) profile.lockByChar = {}
+          profile.lockByChar[this.currItem.w] = Date.now()
+          // 是否是 lesson 最后一个字
+          const isLastInLesson = this.currItemIndex >= (this.lesson?.items?.length || 1) - 1
+          if (isLastInLesson) {
+            actions.markLessonDone(this.lesson.id, 5)
+            actions.addStar(10)
+            this.showCelebration = true
+          } else {
+            this.showCelebration = true
+          }
+        },
+        onCelebrationNext() {
+          this.showCelebration = false
+          if (this.nextCharExists) {
+            this.currItemIndex++
+          } else {
+            this.goBack()
+          }
+        },
+        nextChar() {
+          if (this.nextLocked) return
+          this.currItemIndex++
+        },
+        goBack() { window.location.href = './index.html' },
         shuffle(arr) {
           const a = [...arr]
           for (let i = a.length - 1; i > 0; i--) {
