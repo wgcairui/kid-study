@@ -1,10 +1,12 @@
-// 全局状态 (Vue 3 reactive)
+// 全局状态 (Vue 3 reactive via window.Vue)
 // 用例: import { state, save } from '../core/store.js'
-import { reactive, computed } from 'vue'
 import { loadState, saveState, makeState, getActiveProfile, addProfile as _addProfile, switchProfile as _switchProfile, deleteProfile as _delProfile } from './profile.js'
 import { markLessonDone, markLessonUndone, addStar, addTodayMinutes, updateStreak } from './progress.js'
 import { addWrong, removeWrong as _removeWrong } from './wrongbook.js'
 import { onAnswered, getDueItems } from './ebbinghaus.js'
+
+// 用 window.Vue 拿 reactive (避免 ESM 解析 'vue' 失败)
+const { reactive, computed } = window.Vue
 
 // 加载或创建
 const initial = loadState()

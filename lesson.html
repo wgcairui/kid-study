@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <title>学习</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/lib/vue.global.prod.min.js"></script>
+  <style>
+    body { background: #FAF6EE; }
+    .lesson-container { max-width: 720px; margin: 0 auto; padding: 12px 16px 80px; }
+    .lesson-header { display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 0; position: sticky; top: 0; background: #FAF6EE; z-index: 10; }
+    .back-btn { background: #fff; border: 0; border-radius: 20px; padding: 8px 16px;
+      font-size: 14px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .lesson-title { font-size: 18px; font-weight: 600; color: #2c3e50; }
+    .lesson-progress { font-size: 13px; color: #999; }
+    .char-display { background: #fff; border-radius: 24px; padding: 30px 20px;
+      text-align: center; margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+    .big-char { font-size: 120px; font-weight: 600; color: #2c3e50;
+      line-height: 1.2; cursor: pointer; user-select: none;
+      transition: transform 0.2s; }
+    .big-char:hover { transform: scale(1.05); }
+    .pinyin { font-size: 24px; color: #666; margin-top: 8px; cursor: pointer; }
+    .meaning { font-size: 16px; color: #999; margin-top: 6px; }
+    .play-btn { background: #A8D8EA; color: #fff; border: 0; border-radius: 20px;
+      padding: 10px 24px; font-size: 16px; cursor: pointer; margin-top: 16px;
+      box-shadow: 0 2px 8px rgba(168,216,234,0.4); }
+    .play-btn:active { transform: scale(0.97); }
+    .games { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+      margin-bottom: 16px; }
+    .game-btn { background: #fff; border: 0; border-radius: 16px; padding: 16px 8px;
+      font-size: 14px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: all 0.2s; }
+    .game-btn.on { background: #C8E6C9; color: #2c3e50; font-weight: 600; }
+    .game-btn:active { transform: scale(0.97); }
+    .game-area { background: #fff; border-radius: 16px; padding: 20px;
+      min-height: 240px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+    .game-area h3 { margin: 0 0 12px; font-size: 16px; color: #2c3e50; }
+    .stroke-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .stroke-grid svg { border-radius: 6px; }
+    .stroke-anim-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .stroke-target { border: 2px dashed #eee; border-radius: 12px; }
+    .listen-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .listen-btn { aspect-ratio: 1; background: #FAF6EE; border: 0; border-radius: 12px;
+      font-size: 32px; cursor: pointer; transition: all 0.2s; }
+    .listen-btn.correct { background: #C8E6C9; }
+    .listen-btn.wrong { background: #FFCDD2; }
+    .listen-btn:active { transform: scale(0.95); }
+    .draw-area { text-align: center; }
+    .draw-img { max-width: 100%; max-height: 240px; border-radius: 12px; }
+    .draw-progress { margin-top: 12px; font-size: 16px; color: #666; }
+    .char-nav { display: flex; gap: 8px; margin-top: 16px; }
+    .char-nav button { flex: 1; padding: 12px; border: 0; border-radius: 12px;
+      background: #fff; font-size: 14px; cursor: pointer; }
+    .char-nav button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .done-banner { background: #C8E6C9; color: #2c3e50; border-radius: 12px;
+      padding: 12px; text-align: center; margin-top: 12px; font-size: 16px; }
+    .review-banner { background: #FFD3B6; color: #fff; border-radius: 12px;
+      padding: 12px 16px; margin-bottom: 12px; font-size: 15px; }
+  </style>
+</head>
+<body>
+  <div id="app" v-cloak>
+    <div class="lesson-container">
+      <div class="lesson-header">
+        <button class="back-btn" @click="goBack">← 返回</button>
+        <div>
+          <div class="lesson-title">{{ lesson?.title || '学习' }}</div>
+          <div class="lesson-progress" v-if="lesson?.items">
+            {{ currItemIndex + 1 }} / {{ lesson.items.length }} 字
+          </div>
+        </div>
+        <div style="width: 60px;"></div>
+      </div>
+
+      <div v-if="isReview" class="review-banner">
+        🔁 复习模式 · 复习对了字就从错题本移除
+      </div>
+
+      <!-- 汉字展示 -->
+      <div v-if="currItem" class="char-display">
+        <div class="big-char" @click="readCurr">{{ currItem.w }}</div>
+        <div class="pinyin" @click="readCurr">{{ dict[currItem.w]?.p || '' }}</div>
+        <div class="meaning" v-if="lesson?.title">{{ lesson.title }}</div>
+        <button class="play-btn" @click="readCurr">▶ 听发音</button>
+      </div>
+
+      <!-- 3 个游戏按钮 -->
+      <div v-if="currItem" class="games">
+        <button class="game-btn" :class="{on: gameType === 'stroke'}"
+          @click="goGame('stroke')">🖋️ 笔画</button>
+        <button class="game-btn" :class="{on: gameType === 'listen'}"
+          @click="goGame('listen')">👂 听音</button>
+        <button class="game-btn" :class="{on: gameType === 'draw'}"
+          @click="goGame('draw')">🧩 画一画</button>
+      </div>
+
+      <!-- 游戏区 -->
+      <div v-if="gameType" class="game-area">
+        <h3 v-if="gameType === 'stroke'">✍️ 写一写笔画</h3>
+        <h3 v-else-if="gameType === 'listen'">🔊 听声音选字</h3>
+        <h3 v-else-if="gameType === 'draw'">🖼️ 看图猜字</h3>
+
+        <!-- 笔画游戏 -->
+        <div v-if="gameType === 'stroke' && currItem">
+          <p style="color: #999; font-size: 13px; text-align: center;">
+            {{ strokeStatus ? `已写 ${strokeStatus[0]}/${strokeStatus[1]} 笔` : '用鼠标/手指在右下方写' }}
+          </p>
+          <div class="stroke-anim-row">
+            <div id="stroke-ani"></div>
+            <div id="stroke-write" class="stroke-target"></div>
+          </div>
+          <div id="stroke-list" class="stroke-grid" style="margin-top: 12px; justify-content: center;"></div>
+        </div>
+
+        <!-- 听音游戏 -->
+        <div v-if="gameType === 'listen' && currItem">
+          <p style="color: #999; font-size: 13px; text-align: center; cursor: pointer;"
+            @click="readCurr">🔊 听 (再听一次)</p>
+          <div class="listen-options" style="margin-top: 12px;">
+            <button v-for="(opt, i) in listenOptions" :key="i"
+              class="listen-btn" :class="opt.status"
+              :disabled="listenLocked" @click="listenClick(opt)">
+              {{ opt.w }}
+            </button>
+          </div>
+        </div>
+
+        <!-- 画一画游戏 -->
+        <div v-if="gameType === 'draw' && currItem">
+          <div class="draw-area">
+            <img class="draw-img" :src="drawImg" alt="">
+            <div class="draw-progress">已猜 {{ drawCount }} / 10 次</div>
+            <div class="listen-options" style="margin-top: 12px;">
+              <button v-for="(opt, i) in listenOptions" :key="i"
+                class="listen-btn" :class="opt.status"
+                @click="drawClick(opt)">
+                {{ opt.w }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 字导航 -->
+      <div v-if="currItem" class="char-nav">
+        <button @click="prevChar" :disabled="currItemIndex === 0">← 上一个字</button>
+        <button @click="nextChar" :disabled="currItemIndex >= (lesson?.items?.length || 1) - 1">下一个字 →</button>
+      </div>
+
+      <div v-if="showDoneBanner" class="done-banner">
+        🎉 全部学完啦！星星 +5 · 课已完成
+      </div>
+    </div>
+  </div>
+
+  <!-- 加载 hanzi-writer -->
+  <script src="js/lib/hanzi-writer.min.js"></script>
+  <script src="js/lib/dataWriter.js"></script>
+  <script src="js/utils.js"></script>
+
+  <script type="module">
+    import { state, actions, activeProfile } from './js/core/store.js'
+
+    // 解析 URL
+    const params = new URLSearchParams(location.search)
+    const type = params.get('type') || 'chinese'  // chinese | pinyin | math | poem | review
+    const lessonId = params.get('id')
+
+    // 加载所需数据
+    let lesson = null
+    let lessonDataPath = null
+    if (type === 'chinese') lessonDataPath = './data/lessons/g1-up-w100.json'
+    else if (type === 'pinyin') lessonDataPath = './data/lessons/pinyin.json'
+    else if (type === 'math') lessonDataPath = './data/lessons/math-g1.json'
+    else if (type === 'poem') lessonDataPath = './data/lessons/poem-g1.json'
+
+    const all = lessonDataPath ? await fetch(lessonDataPath).then(r => r.json()) : null
+    if (type === 'poem') {
+      lesson = all?.poems?.find(p => p.id === lessonId)
+    } else {
+      lesson = all?.lessons?.find(l => l.id === lessonId)
+    }
+
+    // 加载字典
+    const dictData = await fetch('./data/dict/word-g1.json').then(r => r.json())
+    const dict = dictData.chars || {}
+
+    Vue.createApp({
+      data() {
+        return {
+          state, activeProfile,
+          type, lesson, dict,
+          currItemIndex: 0,
+          gameType: 'stroke',
+          strokeStatus: null,
+          listenOptions: [],
+          listenLocked: false,
+          drawImg: null,
+          drawCount: 0,
+          showDoneBanner: false,
+          isReview: type === 'review',
+        }
+      },
+      computed: {
+        currItem() {
+          if (this.isReview) {
+            // 复习模式: 从 reviewQueue 取第一个 due 的字
+            const q = this.activeProfile?.reviewQueue || []
+            const due = q.find(x => x.nextReview <= Date.now())
+            return due ? { w: due.w, lessonId: due.lessonId } : null
+          }
+          if (this.type === 'poem') {
+            return this.lesson  // 古诗整个一首当一个 item
+          }
+          return this.lesson?.items?.[this.currItemIndex]
+        },
+      },
+      mounted() {
+        if (this.type === 'chinese' && this.currItem) {
+          // 等下一个 tick 让 DOM ready
+          this.$nextTick(() => this.startStrokeGame())
+        } else if (this.type === 'poem' && this.lesson) {
+          this.speakPoem()
+        } else {
+          this.gameType = null
+        }
+        this.startTime = Date.now()
+        window.addEventListener('beforeunload', this.recordMinutes)
+      },
+      beforeUnmount() {
+        this.recordMinutes()
+      },
+      methods: {
+        goBack() { window.location.href = './index.html' },
+        recordMinutes() {
+          if (!this.startTime) return
+          const min = Math.round((Date.now() - this.startTime) / 60000)
+          if (min > 0) actions.addTodayMinutes(min)
+        },
+        readCurr() {
+          if (!this.currItem) return
+          if (this.type === 'poem') {
+            this.speakPoem()
+          } else {
+            speakText(this.currItem.w, 2, 0.6)
+          }
+        },
+        speakPoem() {
+          if (!this.lesson?.lines) return
+          const text = this.lesson.lines.join(', 。')
+          speakText(text, 1, 0.5)
+        },
+        prevChar() { if (this.currItemIndex > 0) this.currItemIndex--; this.$nextTick(this.refreshGame) },
+        nextChar() {
+          if (this.currItemIndex < (this.lesson?.items?.length || 1) - 1) {
+            this.currItemIndex++
+            this.$nextTick(this.refreshGame)
+          } else {
+            this.finishLesson()
+          }
+        },
+        finishLesson() {
+          actions.markLessonDone(this.lesson.id, 5)
+          actions.addStar(5)
+          this.showDoneBanner = true
+        },
+        goGame(t) {
+          this.gameType = t
+          this.$nextTick(() => {
+            if (t === 'stroke') this.startStrokeGame()
+            else if (t === 'listen') this.startListenGame()
+            else if (t === 'draw') this.startDrawGame()
+          })
+        },
+        refreshGame() {
+          this.listenOptions = []
+          this.strokeStatus = null
+          if (this.gameType === 'stroke') this.$nextTick(this.startStrokeGame)
+          else if (this.gameType === 'listen') this.startListenGame()
+          else if (this.gameType === 'draw') this.startDrawGame()
+        },
+        startStrokeGame() {
+          if (!this.currItem) return
+          const w = this.currItem.w
+          setTimeout(() => {
+            const aniEl = document.getElementById('stroke-ani')
+            const writeEl = document.getElementById('stroke-write')
+            const listEl = document.getElementById('stroke-list')
+            if (aniEl) aniHanzi(aniEl, w, 140)
+            if (writeEl) writeHanzi(writeEl, w, 160, (_, finish, total) => {
+              this.strokeStatus = [finish, total]
+              if (finish === total) {
+                playAudio && playAudio('correct')
+              }
+            })
+            if (listEl) listHanzi(listEl, w, 38)
+          }, 100)
+        },
+        startListenGame() {
+          if (!this.currItem) return
+          // 4 个选项: 1 个正确 + 3 个混淆 (从同课其他字)
+          const items = this.lesson.items || []
+          const others = items.filter(x => x.w !== this.currItem.w)
+          const distractors = this.shuffle(others).slice(0, 3).map(x => ({...x, status: ''}))
+          const right = { w: this.currItem.w, status: '' }
+          this.listenOptions = this.shuffle([right, ...distractors])
+          setTimeout(() => speakText(this.currItem.w, 2, 0.6), 200)
+        },
+        listenClick(opt) {
+          if (this.listenLocked) return
+          if (opt.w === this.currItem.w) {
+            opt.status = 'correct'
+            this.listenLocked = true
+            playAudio && playAudio('correct')
+            if (this.isReview) actions.reviewAnswered(opt.w, true)
+          } else {
+            opt.status = 'wrong'
+            playAudio && playAudio('wrong')
+            if (!this.isReview) actions.addWrong(opt.w, this.lesson.id, 'listen')
+          }
+        },
+        startDrawGame() {
+          if (!this.currItem) return
+          this.drawCount = 0
+          // 随机一张 draw 图
+          const idx = Math.floor(Math.random() * 66) + 1
+          this.drawImg = `./img/draw/draw${idx}.webp`
+          // 选项
+          const items = this.lesson.items || []
+          const others = items.filter(x => x.w !== this.currItem.w)
+          const distractors = this.shuffle(others).slice(0, 3).map(x => ({...x, status: ''}))
+          this.listenOptions = this.shuffle([{ w: this.currItem.w, status: '' }, ...distractors])
+        },
+        drawClick(opt) {
+          if (opt.w === this.currItem.w) {
+            opt.status = 'correct'
+            this.drawCount++
+            playAudio && playAudio('correct')
+          } else {
+            opt.status = 'wrong'
+            playAudio && playAudio('wrong')
+            if (!this.isReview) actions.addWrong(opt.w, this.lesson.id, 'draw')
+          }
+        },
+        shuffle(arr) {
+          const a = [...arr]
+          for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1))
+            ;[a[i], a[j]] = [a[j], a[i]]
+          }
+          return a
+        },
+      },
+    }).mount('#app')
+  </script>
+</body>
+</html>

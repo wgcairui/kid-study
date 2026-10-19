@@ -1,126 +1,328 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
   <meta charset="UTF-8">
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <title>🐻哪吒学汉字🐻</title>
-  <meta name="theme-color" content="#ff6f91">
-  <link rel="apple-touch-icon" href="favicon.ico">
-  <link rel="stylesheet" href="./css/style.css">
+  <title>🐰 幼小衔接学习</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/lib/vue.global.prod.min.js"></script>
+  <style>
+    body { background: #FAF6EE; }
+    .home-container { max-width: 900px; margin: 0 auto; padding: 12px 16px 80px; }
+    .home-header { display: flex; align-items: center; gap: 12px; padding: 16px 0; }
+    .home-logo { font-size: 32px; cursor: pointer; user-select: none; }
+    .profile-chip { display: flex; align-items: center; gap: 6px;
+      background: #fff; padding: 6px 12px; border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); font-size: 16px; }
+    .profile-chip select { border: 0; background: transparent; font-size: 16px;
+      font-weight: 600; color: #333; cursor: pointer; }
+    .profile-chip select:focus { outline: 0; }
+    .add-profile-btn { background: #A8D8EA; color: #fff; border: 0; border-radius: 50%;
+      width: 32px; height: 32px; font-size: 18px; cursor: pointer; }
+    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+      background: #fff; border-radius: 16px; padding: 12px; margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+    .stat-cell { text-align: center; }
+    .stat-cell .num { font-size: 24px; font-weight: 700; color: #2c3e50; }
+    .stat-cell .lbl { font-size: 12px; color: #999; margin-top: 2px; }
+    .review-card { background: linear-gradient(135deg, #FFD3B6, #FFAAA5); color: #fff;
+      border-radius: 16px; padding: 16px 20px; margin-bottom: 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; box-shadow: 0 4px 12px rgba(255,170,165,0.3); }
+    .review-card .num { font-size: 36px; font-weight: 800; }
+    .review-card .text { font-size: 14px; opacity: 0.9; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto;
+      padding-bottom: 4px; }
+    .tab { flex: 0 0 auto; padding: 8px 18px; border-radius: 20px;
+      background: #fff; color: #666; font-size: 15px; cursor: pointer;
+      transition: all 0.2s; }
+    .tab.on { background: #A8D8EA; color: #fff; font-weight: 600; }
+    .unit-group { background: #fff; border-radius: 16px; padding: 14px 16px;
+      margin-bottom: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+    .unit-title { font-size: 16px; font-weight: 600; color: #2c3e50; margin-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: center; }
+    .unit-progress { font-size: 13px; color: #999; font-weight: 400; }
+    .lessons { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; }
+    .lesson-card { aspect-ratio: 1; background: #FAF6EE; border: 0; border-radius: 12px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 14px; color: #555; cursor: pointer; transition: all 0.2s; }
+    .lesson-card:hover { transform: scale(1.04); background: #FFEFD5; }
+    .lesson-card.done { background: #C8E6C9; color: #2c3e50; }
+    .lesson-card .l-title { font-size: 13px; font-weight: 600; }
+    .lesson-card .l-progress { font-size: 11px; color: #888; margin-top: 2px; }
+    .lesson-card.done .l-progress { color: #4a7c4a; }
+    .footer-hint { text-align: center; color: #aaa; font-size: 12px; margin-top: 20px; }
+    .empty-state { text-align: center; padding: 40px 20px; color: #999; }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center; z-index: 100; }
+    .modal-content { background: #fff; border-radius: 20px; padding: 24px;
+      max-width: 320px; width: 90%; }
+    .modal-content h3 { margin: 0 0 16px; }
+    .modal-content input { width: 100%; padding: 10px 12px; border: 2px solid #eee;
+      border-radius: 10px; font-size: 16px; box-sizing: border-box; }
+    .modal-content input:focus { border-color: #A8D8EA; outline: 0; }
+    .modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+    .btn { flex: 1; padding: 10px; border: 0; border-radius: 10px;
+      font-size: 15px; cursor: pointer; }
+    .btn-primary { background: #A8D8EA; color: #fff; }
+    .btn-secondary { background: #f0f0f0; color: #666; }
+  </style>
 </head>
+<body>
+  <div id="app" v-cloak>
+    <div class="home-container">
+      <!-- 顶部: Logo + 选娃 -->
+      <div class="home-header">
+        <div class="home-logo" @click="onLogoClick">🐰</div>
+        <div class="profile-chip">
+          <span>{{ activeProfile?.avatar || '🐰' }}</span>
+          <select v-model="activeProfileId" @change="onProfileChange">
+            <option v-for="(p, id) in state.profiles" :key="id" :value="id">
+              {{ p.name }}
+            </option>
+          </select>
+        </div>
+        <button class="add-profile-btn" @click="showAddProfile = true" title="新增娃">+</button>
+      </div>
 
-<body id="body">
-  <div id="app" class="flex-center" :class="['theme-' + theme]" v-cloak>
-    <div class="body-bg"></div>
-    <div class="container">
-      <div class="btn-top btn-theme" @click="changeTheme">🍀</div>
-      <img class="btn-top audio-img" :class="{ off: !bgPlay }" @click="toggleBg" src="img/audio.png" alt="">
-      <div class="btn-top click-read" :class="{ off: !isClickRead }" @click="toggleCr" v-show="hanziShow">👆</div>
-      <div class="go-top" @click="goTop" v-show="hanziShow">🔝</div>
-      <div class="mask flex-center" v-if="notStart">
+      <!-- 统计 -->
+      <div class="stats-bar">
+        <div class="stat-cell">
+          <div class="num">⭐ {{ activeProfile?.stats?.stars || 0 }}</div>
+          <div class="lbl">星星</div>
+        </div>
+        <div class="stat-cell">
+          <div class="num">🔥 {{ activeProfile?.stats?.streak || 0 }}</div>
+          <div class="lbl">连续打卡</div>
+        </div>
+        <div class="stat-cell">
+          <div class="num">📚 {{ totalDone }}</div>
+          <div class="lbl">已学课</div>
+        </div>
+        <div class="stat-cell">
+          <div class="num">⏱ {{ activeProfile?.stats?.todayMinutes || 0 }}'</div>
+          <div class="lbl">今日分钟</div>
+        </div>
+      </div>
+
+      <!-- 复习入口 -->
+      <div v-if="dueCount > 0" class="review-card" @click="goReview">
         <div>
-          <div><button class="game-button mb10" @click="startApp">开始学习, 当前进度: {{ lockInd }} / {{ list.length }}</button></div>
-          <div><button class="game-button mb10 own w100" @click="goMath">学习数学</button></div>
-          <div><button class="game-button own w100" @click="goPoem">学习古诗词</button></div>
+          <div class="num">{{ dueCount }}</div>
+          <div class="text">个字要复习</div>
         </div>
+        <div style="font-size: 24px;">→</div>
       </div>
-      <header>
-        <!-- 🐻  -->
-        <h1 class="flex-center" @click="flagClick">哪吒学汉字</h1>
-        <!-- <p>点击汉字或播放按钮听发音，点击左右箭头切换！</p> -->
-      </header>
 
-      <div id="hanzi-section" v-show="hanziShow">
-        <div class="hanzi-list" id="hanzi-list">
-          <div class="hanzi-item" :class="{locked: lockInd < ind, on: lockInd == ind, tested: item.isTest}" v-for="(item, ind) in list" :key="ind" @click="hanziClick(item, ind)">
-            {{ item.w }}
-          </div>
+      <!-- 4 个 Tab -->
+      <div class="tabs">
+        <div v-for="t in tabs" :key="t.id" class="tab" :class="{on: currentTab === t.id}"
+          @click="currentTab = t.id">
+          {{ t.icon }} {{ t.label }}
         </div>
       </div>
 
-      <main id="learning-section" v-show="cardShow">
-        <div class="character-display" v-if="currItem">
-          <!-- <button id="prevChar" class="nav-button">&lt;</button> -->
-          <div class="char-card">
-            <div id="character" class="big-char" @click="readItem(currItem, true)">{{ currItem.w }}</div>
-            <div id="pinyin" class="pinyin" @click="readItem(currItem, true)">{{ currItem.y }}</div>
-            <div id="meaning" class="meaning">{{ currItem.p }}</div>
-            <button @click="readItem(currItem)" class="play-button">▶️ 听发音</button>
+      <!-- 语文: 8 单元分组 -->
+      <template v-if="currentTab === 'chinese'">
+        <div v-for="unit in chineseUnits" :key="unit.id" class="unit-group">
+          <div class="unit-title">
+            <span>第 {{ unit.unit }} 单元 · {{ unit.name }}</span>
+            <span class="unit-progress">{{ doneIn(unit.lessons) }} / {{ unit.lessons.length }}</span>
           </div>
-          <!-- <button id="nextChar" class="nav-button">&gt;</button> -->
+          <div class="lessons">
+            <button v-for="lesson in unit.lessons" :key="lesson.id"
+              class="lesson-card" :class="{done: isDone(lesson.id)}"
+              @click="goLesson(lesson)">
+              <div class="l-title">{{ lesson.title }}</div>
+              <div class="l-progress">{{ isDone(lesson.id) ? '✓' : '未学' }}</div>
+            </button>
+          </div>
         </div>
-        <p class="instructions" v-if="currItem" @click="speakText(currItem.s)">▶️ 句子：{{ currItem.s }}</p> <!-- 点击开始游戏，巩固学习！ -->
-        <div class="game-selection mb15">
-          <button class="game-button" :class="[gameStep.includes(1) && 'own']" @click="goGame('stroke')">🖋️ 1. 书写笔画</button>
-          <button class="game-button" :class="[gameStep.includes(2) && 'own']" @click="goGame('listen')">👂 2. 听音辨字</button>
-          <button class="game-button" :class="[gameStep.includes(3) && 'own']" @click="goGame('draw')">🧩 3. 画一画吧 </button>
-          <!-- <button class="game-button" data-game="char_meaning">💡 认字识意</button> -->
-          <!-- <button class="game-button" data-game="pinyin_match">🧩 拼音匹配</button> -->
-        </div>
-        <div class="game-actions">
-          <button @click="goBack(1)" class="action-button"><span>👈</span> 返回列表</button>
-        </div>
-      </main>
+      </template>
 
-      <section id="game-section" v-show="gameShow">
-        <h2>游戏时间！🥳</h2>
-        <div id="game-content">
-          <div v-show="gameType === 'listen'">
-            <p class="question-text"><span @click="readItem(currItem, true)">🔊</span>听声音，选择正确的汉字：</p>
-            <div class="options-grid">
-              <button class="option-button" :class="[item.status]" v-for="(item, ind) in randomList" :key="ind" @click="listenClick(item)">
-                {{ item.w }}
-              </button>
-            </div>
+      <!-- 拼音: 8 课 -->
+      <template v-if="currentTab === 'pinyin'">
+        <div class="unit-group">
+          <div class="unit-title">
+            <span>拼音单元</span>
+            <span class="unit-progress">{{ doneIn(pinyinLessons) }} / {{ pinyinLessons.length }}</span>
           </div>
-          <div v-show="gameType === 'stroke'" class="text-center mb15" id="stroke-list"></div>
-          <div v-show="gameType === 'stroke'" class="flex ai-c jc-sa w100">
-            <div id="stroke-ani" clas="stroke-box"></div>
-            <div id="stroke-write"  clas="stroke-box"></div>
-          </div>
-          <div v-show="gameType === 'draw'" class="flex-center draw-wrap">
-            <div class="draw-box">
-              <img :src="drawImg" ><span :class="[drawType]" :style="{ background: drawColor, '--p-done':  `${drawStatus}%`, '--p-not': `${100 - drawStatus}%`, '--d-done':  `${drawStatus / 100}`, '--d-not': `${1 - drawStatus / 100}`}"></span>
-            </div>
-            <div class="flex-col jc-sa">
-              <button class="option-button" :class="[item.status]" v-for="(item, ind) in randomList" :key="ind" @click="drawClick(item)">
-                {{ item.w }}
-              </button>
-            </div>
+          <div class="lessons">
+            <button v-for="lesson in pinyinLessons" :key="lesson.id"
+              class="lesson-card" :class="{done: isDone(lesson.id)}"
+              @click="goLesson(lesson)">
+              <div class="l-title">{{ lesson.title.replace(/^\d+\.\s*/, '') }}</div>
+              <div class="l-progress">{{ isDone(lesson.id) ? '✓' : lesson.count + ' 单元音' }}</div>
+            </button>
           </div>
         </div>
-        <div class="game-feedback">
-          <div v-if="gameStatus">
-            <span id="feedback-icon">{{ gameStatus === 'correct' ? '✅' : '❌' }}</span>
-            <span id="feedback-text">{{ gameStatus === 'correct' ? '太棒了！' : '再试一次哦！' }}</span>
-          </div>
-          <div v-if="strokeStatus">
-            <span id="feedback-text"><span v-if="strokeStatus[0] == strokeStatus[1]">✅</span>
-              完成了 <b>{{ strokeStatus[0] }}</b> / {{ strokeStatus[1] }} 个笔画</span>
-          </div>
-        </div>
-        <div class="game-actions">
-          <button id="nextQuestion" class="action-button hidden">下一题</button>
-          <button @click="goBack(2)" class="action-button"><span>👈</span> 返回学习</button>
-        </div>
-      </section>
+      </template>
 
+      <!-- 数学: 10 课 -->
+      <template v-if="currentTab === 'math'">
+        <div class="unit-group">
+          <div class="unit-title">
+            <span>数学</span>
+            <span class="unit-progress">{{ doneIn(mathLessons) }} / {{ mathLessons.length }}</span>
+          </div>
+          <div class="lessons">
+            <button v-for="lesson in mathLessons" :key="lesson.id"
+              class="lesson-card" :class="{done: isDone(lesson.id)}"
+              @click="goLesson(lesson)">
+              <div class="l-title">{{ lesson.title }}</div>
+              <div class="l-progress">{{ isDone(lesson.id) ? '✓' : lesson.count + ' 题' }}</div>
+            </button>
+          </div>
+        </div>
+      </template>
+
+      <!-- 古诗: 16 首 -->
+      <template v-if="currentTab === 'poem'">
+        <div class="unit-group">
+          <div class="unit-title">
+            <span>古诗必背 16 首</span>
+            <span class="unit-progress">{{ doneIn(poemLessons) }} / {{ poemLessons.length }}</span>
+          </div>
+          <div class="lessons">
+            <button v-for="lesson in poemLessons" :key="lesson.id"
+              class="lesson-card" :class="{done: isDone(lesson.id)}"
+              @click="goLesson(lesson)">
+              <div class="l-title">{{ lesson.title }}</div>
+              <div class="l-progress">{{ isDone(lesson.id) ? '✓' : lesson.author }}</div>
+            </button>
+          </div>
+        </div>
+      </template>
+
+      <div class="footer-hint">
+        长按 🐰 3 秒进入家长后台 · 顶部下拉切换娃
+      </div>
     </div>
 
-    <audio id="audioBg" src="audio/bg1.mp3"></audio>
-    <audio id="correctSound" src="audio/correct.mp3"></audio> <!-- 成功音效 -->
-    <audio id="wrongSound" src="audio/wrong.mp3"></audio> <!-- 失败音效 -->
+    <!-- 新增娃 Modal -->
+    <div v-if="showAddProfile" class="modal" @click.self="showAddProfile = false">
+      <div class="modal-content">
+        <h3>新增宝宝档案</h3>
+        <input v-model="newProfileName" placeholder="宝宝名字" maxlength="10" autofocus>
+        <div style="margin-top: 12px;">
+          <span style="color: #999; font-size: 13px;">选个头像:</span>
+          <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
+            <span v-for="a in avatars" :key="a"
+              style="font-size: 28px; cursor: pointer; padding: 4px;"
+              :style="{ background: newProfileAvatar === a ? '#FFEFD5' : 'transparent', borderRadius: '8px' }"
+              @click="newProfileAvatar = a">{{ a }}</span>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" @click="showAddProfile = false">取消</button>
+          <button class="btn btn-primary" @click="confirmAddProfile">添加</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <script src="js/lib/hanzi-writer.min.js"></script>
-  <script src="js/lib/vue.global.prod.min.js"></script>
-  <script src="js/lib/dataList.js"></script>
-  <!-- <script src="js/lib/dataWriter.js"></script> -->
-  <script src="js/utils.js"></script>
-  <script src="js/index.js"></script>
-</body>
+  <script type="module">
+    import { state, actions, activeProfile, dueReviews, totalStars } from './js/core/store.js'
+    import { getDueItems } from './js/core/ebbinghaus.js'
 
+    // 加载课程数据
+    const [chineseData, pinyinData, mathData, poemData] = await Promise.all([
+      fetch('./data/lessons/g1-up-w100.json').then(r => r.json()),
+      fetch('./data/lessons/pinyin.json').then(r => r.json()),
+      fetch('./data/lessons/math-g1.json').then(r => r.json()),
+      fetch('./data/lessons/poem-g1.json').then(r => r.json()),
+    ])
+
+    // 把 25 课按 unit 分组
+    const chineseUnits = []
+    const unitMap = {}
+    for (const lesson of chineseData.lessons) {
+      const m = lesson.id.match(/g1-up-u(\d+)/)
+      const u = m ? parseInt(m[1]) : 0
+      if (!unitMap[u]) {
+        unitMap[u] = { id: 'u' + u, unit: u, name: '识字 / 课文', lessons: [] }
+        chineseUnits.push(unitMap[u])
+      }
+      unitMap[u].lessons.push(lesson)
+    }
+    chineseUnits.sort((a, b) => a.unit - b.unit)
+
+    const pinyinLessons = pinyinData.lessons
+    const mathLessons = mathData.lessons
+    const poemLessons = poemData.poems.map(p => ({
+      id: p.id, title: p.title, author: p.author, count: p.lines.length,
+    }))
+
+    Vue.createApp({
+      data() {
+        return {
+          state,
+          activeProfile,
+          dueReviews,
+          totalStars,
+          activeProfileId: state.activeProfile,
+          tabs: [
+            { id: 'chinese', label: '语文', icon: '📖' },
+            { id: 'pinyin', label: '拼音', icon: '🔤' },
+            { id: 'math', label: '数学', icon: '🔢' },
+            { id: 'poem', label: '古诗', icon: '🎋' },
+          ],
+          currentTab: 'chinese',
+          chineseUnits, pinyinLessons, mathLessons, poemLessons,
+          showAddProfile: false,
+          newProfileName: '',
+          newProfileAvatar: '🐰',
+          avatars: ['🐰','🐱','🐶','🐼','🐻','🐯','🦊','🐸','🐵','🐔'],
+          logoClickCount: 0,
+          logoClickTimer: null,
+        }
+      },
+      computed: {
+        totalDone() {
+          return Object.values(this.activeProfile?.lockByLesson || {})
+            .filter(x => x.done).length
+        },
+        dueCount() {
+          const q = this.activeProfile?.reviewQueue || []
+          return getDueItems(q).length
+        },
+      },
+      methods: {
+        isDone(lessonId) {
+          return this.activeProfile?.lockByLesson?.[lessonId]?.done
+        },
+        doneIn(lessons) {
+          return lessons.filter(l => this.isDone(l.id)).length
+        },
+        onProfileChange() {
+          actions.switchProfile(this.activeProfileId)
+        },
+        confirmAddProfile() {
+          if (!this.newProfileName.trim()) return
+          actions.addProfile(this.newProfileName.trim(), this.newProfileAvatar)
+          this.activeProfileId = Object.keys(state.profiles).pop()
+          actions.switchProfile(this.activeProfileId)
+          this.showAddProfile = false
+          this.newProfileName = ''
+        },
+        goLesson(lesson) {
+          const url = './lesson.html?type=' + this.currentTab + '&id=' + encodeURIComponent(lesson.id)
+          window.location.href = url
+        },
+        goReview() {
+          window.location.href = './lesson.html?type=review'
+        },
+        onLogoClick() {
+          this.logoClickCount++
+          clearTimeout(this.logoClickTimer)
+          this.logoClickTimer = setTimeout(() => this.logoClickCount = 0, 3000)
+          if (this.logoClickCount >= 3) {
+            window.location.href = './parent.html'
+          }
+        },
+      },
+    }).mount('#app')
+  </script>
+</body>
 </html>
